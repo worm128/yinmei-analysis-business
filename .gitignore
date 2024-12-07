@@ -1,0 +1,8 @@
+*__pycache__/
+runtime/
+.github/
+.git/
+db/memory/
+logs/
+model/
+config.yml

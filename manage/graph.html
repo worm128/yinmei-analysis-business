@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+    <meta charset="utf-8">
+    <title>思维扩散</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Ai吟美管理后台">
+    <meta name="author" content="程序猿的退休生活">
+
+    <!-- The styles -->
+    <link id="bs-css" href="css/bootstrap-cerulean.min.css" rel="stylesheet">
+
+    <link href="css/charisma-app.css" rel="stylesheet">
+    <link href='bower_components/fullcalendar/dist/fullcalendar.css' rel='stylesheet'>
+    <link href='bower_components/fullcalendar/dist/fullcalendar.print.css' rel='stylesheet' media='print'>
+    <link href='bower_components/chosen/chosen.min.css' rel='stylesheet'>
+    <link href='bower_components/colorbox/example3/colorbox.css' rel='stylesheet'>
+    <link href='bower_components/responsive-tables/responsive-tables.css' rel='stylesheet'>
+    <link href='bower_components/bootstrap-tour/build/css/bootstrap-tour.min.css' rel='stylesheet'>
+    <link href='css/jquery.noty.css' rel='stylesheet'>
+    <link href='css/noty_theme_default.css' rel='stylesheet'>
+    <link href='css/elfinder.min.css' rel='stylesheet'>
+    <link href='css/elfinder.theme.css' rel='stylesheet'>
+    <link href='css/jquery.iphone.toggle.css' rel='stylesheet'>
+    <link href='css/uploadify.css' rel='stylesheet'>
+    <link href='css/animate.min.css' rel='stylesheet'>
+    <link href='css/extend.css' rel='stylesheet'>
+    <!-- jQuery -->
+    <script src="bower_components/jquery/jquery.min.js"></script>
+    <!--jbox-->
+    <link id="skin" rel="stylesheet" href="bower_components/jBox/Skins/Red/jbox.css" />
+    <script type="text/javascript" src="bower_components/jBox/jquery.jBox-2.3.min.js"></script>
+    <script type="text/javascript" src="bower_components/jBox/i18n/jquery.jBox-zh-CN.js"></script>
+    <!--vue-->
+    <script src="js/vue.3.5.13.js"></script>
+    <script src="js/axios.min.js"></script>
+    <script src="config.js"></script>
+    <!-- The fav icon -->
+    <link rel="shortcut icon" href="img/favicon.ico">
+
+    <script type="text/javascript">
+        async function loadMenu() {
+            const response = await fetch('menu.html', {cache: 'force-cache'});
+            const menuHtml = await response.text();
+            document.getElementById('menu').innerHTML = menuHtml;
+        }
+
+        async function loadFooter() {
+            const response = await fetch('footer.html', {cache: 'force-cache'});
+            const footerHtml = await response.text();
+            document.getElementById('footer').innerHTML = footerHtml;
+        }
+
+        async function loadTopbar() {
+            const response = await fetch('topbar.html', {cache: 'force-cache'});
+            const topbarHtml = await response.text();
+            document.getElementById('topbar').innerHTML = topbarHtml;
+
+            // 菜单加载完成后，加载其他JavaScript文件
+            const script = document.createElement('script');
+            script.src = 'js/charisma.js';
+            document.head.appendChild(script);
+        }
+
+        // DOMContentLoaded 事件确保 DOM 已经加载完成
+        document.addEventListener('DOMContentLoaded', () => {
+            loadMenu();
+            loadTopbar();
+            loadFooter();
+        });
+    </script>
+</head>
+
+<body>
+<!-- topbar starts -->
+<div id="topbar"></div>
+<!-- topbar ends -->
+<div class="ch-container">
+    <div class="row">
+
+        <!-- left menu starts -->
+        <div id="menu"></div>
+        <!-- left menu ends -->
+
+
+        <div id="content" class="col-lg-10 col-sm-10">
+            <!-- content starts -->
+            <div>
+                <ul class="breadcrumb">
+                    <li>
+                        <a href="index.html">Home</a>
+                    </li>
+                    <li>
+                        <a href="web_server.html">思维扩散</a>
+                    </li>
+                </ul>
+            </div>
+
+            <form @submit.prevent="handleSubmit">
+            <div class="row">
+                <div class="box col-md-12">
+                    <div class="box-inner">
+                        <div class="box-header well" data-original-title="">
+                            <h2><i class="glyphicon glyphicon-edit"></i> 思维扩散</h2>
+
+                            <div class="box-icon">
+                                <a href="#" class="btn btn-setting btn-round btn-default"><i
+                                        class="glyphicon glyphicon-cog"></i></a>
+                                <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                                        class="glyphicon glyphicon-chevron-up"></i></a>
+                                <a href="#" class="btn btn-close btn-round btn-default"><i
+                                        class="glyphicon glyphicon-remove"></i></a>
+                            </div>
+                        </div>
+
+                        <div class="box-content">
+                            <br/>
+                            <span class="title">neo4j图库</span>
+                            <hr>
+                            <div class="line">
+                                <div class="form-group position">
+                                    <label for="neo4j.url">neo4j地址</label>
+                                    <input type="text" class="form-control" id="neo4j.url" placeholder="neo4j知识图库服务地址，例如：bolt://localhost:7687" v-model="info.neo4j_url">
+                                </div>
+
+                                <div class="form-group position">
+                                    <label for="neo4j.dbname">neo4j数据库名称</label>
+                                    <input type="text" class="form-control" id="neo4j.dbname" placeholder="数据库名称，如：yinmei" v-model="info.neo4j_dbname">
+                                </div>
+
+                                <div class="form-group position">
+                                    <label for="neo4j.username">用户名</label>
+                                    <input type="text" class="form-control" id="neo4j.username" placeholder="用户名" v-model="info.neo4j_username">
+                                </div>
+
+                                <div class="form-group position">
+                                    <label for="neo4j.password">密码</label>
+                                    <input type="text" class="form-control" id="neo4j.password" placeholder="密码" v-model="info.neo4j_password">
+                                </div>
+                            </div>
+
+
+                            <span class="title">LLM大模型<span class="tip" data-toggle="tooltip" title="使用大模型进行关系抽取。支持OpenAi规范的所有Api接口"><i class="glyphicon glyphicon-question-sign"></i></span></span>
+                            <hr>
+                            <div class="line">
+                                <div class="form-group position" style="width: 500px;">
+                                    <label for="llm.apikey">密钥</label>
+                                    <input type="text" class="form-control" id="llm.apikey" placeholder="如：sk-hnmhoEysKsWV8WOy806c2aEa6c26408bB6F648714e57D5A2" v-model="info.llm_apikey">
+                                </div>
+
+                                <div class="form-group position" style="width: 300px;">
+                                    <label for="llm.url">服务地址</label>
+                                    <input type="text" class="form-control" id="llm.url" placeholder="如：http://192.168.2.58:9997/v1/" v-model="info.llm_url">
+                                </div>
+
+                                <div class="form-group position" style="width: 300px;">
+                                    <label for="llm.modelname">模型名称</label>
+                                    <input type="text" class="form-control" id="llm.modelname" placeholder="如:Qwen2.5-14B-Instruct-GPTQ-Int8" v-model="info.llm_modelname">
+                                </div>
+                            </div>
+
+                            <span class="title">关系词库<span class="tip" data-toggle="tooltip" title="关系图库用于导入对应一些网络词库的梗，让对话更加前卫潮流"><i class="glyphicon glyphicon-question-sign"></i></span></span>
+                            <hr>
+                            <div class="line">
+                                <div class="form-group position">
+                                    <label for="graph.switch">开关</label>
+                                    <input id="graph.switch" data-no-uniform="true" type="checkbox" class="iphone-toggle" v-model="info.graph_switch">
+                                </div>
+
+                                <div class="form-group position">
+                                    <label for="graph.file_path">文件处理路径</label>
+                                    <input type="text" class="form-control" id="graph.file_path" placeholder="例如：.\dataset\qq\20241127" v-model="info.graph_file_path">
+                                </div>
+
+                                <div class="form-group position">
+                                    <label for="graph.line">单块行数</label>
+                                    <input type="text" class="form-control" id="graph.line" placeholder="例如：10" v-model="info.graph_line">
+                                </div>
+                            </div>
+
+                            <div class="line">
+                                <button id="save" type="submit" class="btn btn-default" title="保存配置后不会立马生效，需要点击重启应用按钮才会生效" data-toggle="tooltip">保存配置</button>
+                                &nbsp;
+                                <button id="cancel" type="button" class="btn btn-default" @click="refreshPage">取消</button>
+                                &nbsp;
+                                <button id="restart" type="button" class="btn btn-warning" title="重启应用会重新加载配置，中途会有短暂中断" data-toggle="tooltip" @click="restart">重启应用</button>
+                                &nbsp;
+                                <button id="import_data" type="button" class="btn btn-success" @click="import_data">开始导入</button>
+                                &nbsp;
+                                <button id="import_data_stop" type="button" class="btn btn-danger" @click="import_data_stop">导入中断</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!--/span-->
+
+            </div><!--/row-->
+            </form>
+            <!-- content ends -->
+        </div><!--/#content.col-md-0-->
+    </div><!--/fluid-row-->
+
+    <hr>
+    <!-- 底部 -->
+    <div id="footer"></div>
+    <!-- end -->
+
+</div><!--/.fluid-container-->
+
+<!-- external javascript -->
+
+<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+<!-- library for cookie management -->
+<script src="js/jquery.cookie.js"></script>
+<!-- calender plugin -->
+<script src='bower_components/moment/min/moment.min.js'></script>
+<script src='bower_components/fullcalendar/dist/fullcalendar.min.js'></script>
+<!-- data table plugin -->
+<script src='js/jquery.dataTables.min.js'></script>
+
+<!-- select or dropdown enhancer -->
+<script src="bower_components/chosen/chosen.jquery.min.js"></script>
+<!-- plugin for gallery image view -->
+<script src="bower_components/colorbox/jquery.colorbox-min.js"></script>
+<!-- notification plugin -->
+<script src="js/jquery.noty.js"></script>
+<!-- library for making tables responsive -->
+<script src="bower_components/responsive-tables/responsive-tables.js"></script>
+<!-- tour plugin -->
+<script src="bower_components/bootstrap-tour/build/js/bootstrap-tour.min.js"></script>
+<!-- star rating plugin -->
+<script src="js/jquery.raty.min.js"></script>
+<!-- for iOS style toggle switch -->
+<script src="js/jquery.iphone.toggle.js"></script>
+<!-- autogrowing textarea plugin -->
+<script src="js/jquery.autogrow-textarea.js"></script>
+<!-- multiple file upload plugin -->
+<script src="js/jquery.uploadify-3.1.min.js"></script>
+<!-- history.js for cross-browser state change on ajax -->
+<script src="js/jquery.history.js"></script>
+<!-- application script for Charisma demo -->
+<!--<script src="js/charisma.js"></script>-->
+
+<script>
+    const { createApp, reactive, onMounted } = Vue;
+
+    const app = createApp({
+        methods: {
+            refreshPage() {
+                location.reload();
+            },
+            async restart() {
+                axios.post(window.AppConfig.apiUrl+'/restart', {timeout: 500});
+            },
+            async import_data() {
+                axios.get(window.AppConfig.apiUrl+'/graph_data_import', {timeout: 5000});
+            },
+            async import_data_stop() {
+                axios.get(window.AppConfig.apiUrl+'/graph_data_import_stop', {timeout: 5000});
+            }
+        },
+        setup() {
+            const info = reactive({});
+
+            // 暴露以便外部访问
+            //app.config.globalProperties.$info = info;
+
+            const fetchUserInfo = async () => {
+                try {
+                    const inputNames = Array.from(document.querySelectorAll('#content input')).map(input => input.id);
+
+                    console.log(inputNames);
+                    const response = await axios.post(window.AppConfig.apiUrl+'/oper/read_yml', inputNames);
+                    console.log(response.data);
+
+                    // 更新 Vue 的响应式数据
+                    //info.value = response.data;
+                    Object.assign(info, {
+
+                        neo4j_url: response.data["neo4j.url"],
+                        neo4j_dbname: response.data["neo4j.dbname"],
+                        neo4j_username: response.data["neo4j.username"],
+                        neo4j_password: response.data["neo4j.password"],
+
+                        graph_switch: response.data["graph.switch"],
+                        graph_file_path: response.data["graph.file_path"],
+                        graph_line: response.data["graph.line"],
+
+                        llm_apikey: response.data["llm.apikey"],
+                        llm_url: response.data["llm.url"],
+                        llm_modelname: response.data["llm.modelname"],
+                    });
+                } catch (error) {
+                    console.error('Failed to fetch user info:', error);
+                }
+            };
+
+            onMounted(() => {
+                fetchUserInfo();
+            });
+
+            const handleSubmit = async () => {
+                try {
+                    info.graph_switch = $("#graph\\.switch").is(':checked');
+
+                    let postData = {
+                        "neo4j.url": info.neo4j_url,
+                        "neo4j.dbname": info.neo4j_dbname,
+                        "neo4j.username": info.neo4j_username,
+                        "neo4j.password": info.neo4j_password,
+
+                        "graph.switch": info.graph_switch,
+                        "graph.file_path": info.graph_file_path,
+                        "graph.line": Number(info.graph_line),
+
+                        "llm.apikey": info.llm_apikey,
+                        "llm.url": info.llm_url,
+                        "llm.modelname": info.llm_modelname,
+                    };
+                    console.log(postData);
+                    // 发送 POST 请求到后端 API
+                    const response = await axios.post(window.AppConfig.apiUrl+'/oper/write_yml', postData, headers={'Content-Type': 'application/json'});
+                    console.log('更新成功', response.data);
+                    if(response.data["status"]=="成功") {
+                        $.jBox.tip('更新成功', 'success');
+                    }
+                } catch (error) {
+                    console.error('更新失败', error);
+                }
+            };
+
+            return {
+                info,
+                handleSubmit
+            };
+        }
+    }).mount('#content');
+</script>
+
+
+</body>
+</html>

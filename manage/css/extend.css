@@ -1,0 +1,20 @@
+.line{
+    float: none; width: 100%; white-space: pre-wrap; height: auto;
+    min-height: 100px;
+}
+.form-group.position{
+    float: left; width: 200px; margin-right: 10px;
+}
+.title{
+    font-weight: bold; font-size: 22px; color: #0c75d2;
+}
+.tip{
+    cursor: pointer; margin-left: 3px;
+}
+
+.table .center,th{
+    text-align: center;
+}
+hr{
+    width: 100%;
+}

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+    <meta charset="utf-8">
+    <title>Web服务基础配置</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Ai吟美管理后台">
+    <meta name="author" content="程序猿的退休生活">
+
+    <!-- The styles -->
+    <link id="bs-css" href="css/bootstrap-cerulean.min.css" rel="stylesheet">
+
+    <link href="css/charisma-app.css" rel="stylesheet">
+    <link href='bower_components/fullcalendar/dist/fullcalendar.css' rel='stylesheet'>
+    <link href='bower_components/fullcalendar/dist/fullcalendar.print.css' rel='stylesheet' media='print'>
+    <link href='bower_components/chosen/chosen.min.css' rel='stylesheet'>
+    <link href='bower_components/colorbox/example3/colorbox.css' rel='stylesheet'>
+    <link href='bower_components/responsive-tables/responsive-tables.css' rel='stylesheet'>
+    <link href='bower_components/bootstrap-tour/build/css/bootstrap-tour.min.css' rel='stylesheet'>
+    <link href='css/jquery.noty.css' rel='stylesheet'>
+    <link href='css/noty_theme_default.css' rel='stylesheet'>
+    <link href='css/elfinder.min.css' rel='stylesheet'>
+    <link href='css/elfinder.theme.css' rel='stylesheet'>
+    <link href='css/jquery.iphone.toggle.css' rel='stylesheet'>
+    <link href='css/uploadify.css' rel='stylesheet'>
+    <link href='css/animate.min.css' rel='stylesheet'>
+    <link href='css/extend.css' rel='stylesheet'>
+    <!-- jQuery -->
+    <script src="bower_components/jquery/jquery.min.js"></script>
+    <!--jbox-->
+    <link id="skin" rel="stylesheet" href="bower_components/jBox/Skins/Red/jbox.css" />
+    <script type="text/javascript" src="bower_components/jBox/jquery.jBox-2.3.min.js"></script>
+    <script type="text/javascript" src="bower_components/jBox/i18n/jquery.jBox-zh-CN.js"></script>
+    <!--vue-->
+    <script src="js/vue.3.5.13.js"></script>
+    <script src="js/axios.min.js"></script>
+    <script src="config.js"></script>
+    <!-- The fav icon -->
+    <link rel="shortcut icon" href="img/favicon.ico">
+
+    <script type="text/javascript">
+        async function loadMenu() {
+            const response = await fetch('menu.html', {cache: 'force-cache'});
+            const menuHtml = await response.text();
+            document.getElementById('menu').innerHTML = menuHtml;
+        }
+
+        async function loadFooter() {
+            const response = await fetch('footer.html', {cache: 'force-cache'});
+            const footerHtml = await response.text();
+            document.getElementById('footer').innerHTML = footerHtml;
+        }
+
+        async function loadTopbar() {
+            const response = await fetch('topbar.html', {cache: 'force-cache'});
+            const topbarHtml = await response.text();
+            document.getElementById('topbar').innerHTML = topbarHtml;
+
+            // 菜单加载完成后，加载其他JavaScript文件
+            const script = document.createElement('script');
+            script.src = 'js/charisma.js';
+            document.head.appendChild(script);
+        }
+
+        // DOMContentLoaded 事件确保 DOM 已经加载完成
+        document.addEventListener('DOMContentLoaded', () => {
+            loadMenu();
+            loadTopbar();
+            loadFooter();
+        });
+    </script>
+</head>
+
+<body>
+<!-- topbar starts -->
+<div id="topbar"></div>
+<!-- topbar ends -->
+<div class="ch-container">
+    <div class="row">
+
+        <!-- left menu starts -->
+        <div id="menu"></div>
+        <!-- left menu ends -->
+
+
+        <div id="content" class="col-lg-10 col-sm-10">
+            <!-- content starts -->
+            <div>
+                <ul class="breadcrumb">
+                    <li>
+                        <a href="index.html">Home</a>
+                    </li>
+                    <li>
+                        <a href="web_server.html">基础配置</a>
+                    </li>
+                </ul>
+            </div>
+
+            <form @submit.prevent="handleSubmit">
+            <div class="row">
+                <div class="box col-md-12">
+                    <div class="box-inner">
+                        <div class="box-header well" data-original-title="">
+                            <h2><i class="glyphicon glyphicon-edit"></i> 基础配置</h2>
+
+                            <div class="box-icon">
+                                <a href="#" class="btn btn-setting btn-round btn-default"><i
+                                        class="glyphicon glyphicon-cog"></i></a>
+                                <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                                        class="glyphicon glyphicon-chevron-up"></i></a>
+                                <a href="#" class="btn btn-close btn-round btn-default"><i
+                                        class="glyphicon glyphicon-remove"></i></a>
+                            </div>
+                        </div>
+
+                        <div class="box-content">
+                            <br/>
+                            <span class="title">意图分析<span class="tip" data-toggle="tooltip" title="根据意图分析,智能识别用户想法，包括：聊天,唱歌, 画画, 跳舞, 搜索, 搜图, 切歌, 切换, 换装"><i class="glyphicon glyphicon-question-sign"></i></span></span>
+                            <hr>
+                            <div class="line">
+                                <div class="form-group position">
+                                    <label for="intent.switch">开关</label>
+                                    <input id="intent.switch" data-no-uniform="true" type="checkbox" class="iphone-toggle" v-model="info.intent_switch">
+                                </div>
+
+                                <div class="form-group position">
+                                    <label for="intent.model">模型路径</label><span class="tip" data-toggle="tooltip" title="意图分析的模型路径，可以填写相对路径，也可以是绝对路径"><i class="glyphicon glyphicon-question-sign"></i></span>
+                                    <input type="text" class="form-control" id="intent.model" placeholder="意图分析模型" v-model="info.intent_model">
+                                </div>
+                            </div>
+
+                            <span class="title">长期记忆<span class="tip" data-toggle="tooltip" title="持久化Ai的记忆，使用具体时间词语可以唤起记忆。或者使用时间词性的词语。例如，上次,上一次,最近,上回,上一回,之前,那次,刚才,刚刚,上一句,上句,昨天,当时,那时,前天,大前天,上个月,以前,从前,记得,哪一天,那一天,过往,以往,过去。"><i class="glyphicon glyphicon-question-sign"></i></span></span>
+                            <hr>
+                            <div class="line">
+                                <div class="form-group position">
+                                    <label for="memory.switch">开关</label>
+                                    <input id="memory.switch" data-no-uniform="true" type="checkbox" class="iphone-toggle" v-model="info.memory_switch">
+                                </div>
+                            </div>
+
+                            <div class="line">
+                                <button id="save" type="submit" class="btn btn-default" title="保存配置后不会立马生效，需要点击重启应用按钮才会生效" data-toggle="tooltip">保存配置</button>
+                                &nbsp;
+                                <button id="cancel" type="button" class="btn btn-default" @click="refreshPage">取消</button>
+                                &nbsp;
+                                <button id="restart" type="button" class="btn btn-warning" title="重启应用会重新加载配置，中途会有短暂中断" data-toggle="tooltip" @click="restart">重启应用</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--/span-->
+
+            </div><!--/row-->
+            </form>
+            <!-- content ends -->
+        </div><!--/#content.col-md-0-->
+    </div><!--/fluid-row-->
+
+    <hr>
+    <!-- 底部 -->
+    <div id="footer"></div>
+    <!-- end -->
+
+</div><!--/.fluid-container-->
+
+<!-- external javascript -->
+
+<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+<!-- library for cookie management -->
+<script src="js/jquery.cookie.js"></script>
+<!-- calender plugin -->
+<script src='bower_components/moment/min/moment.min.js'></script>
+<script src='bower_components/fullcalendar/dist/fullcalendar.min.js'></script>
+<!-- data table plugin -->
+<script src='js/jquery.dataTables.min.js'></script>
+
+<!-- select or dropdown enhancer -->
+<script src="bower_components/chosen/chosen.jquery.min.js"></script>
+<!-- plugin for gallery image view -->
+<script src="bower_components/colorbox/jquery.colorbox-min.js"></script>
+<!-- notification plugin -->
+<script src="js/jquery.noty.js"></script>
+<!-- library for making tables responsive -->
+<script src="bower_components/responsive-tables/responsive-tables.js"></script>
+<!-- tour plugin -->
+<script src="bower_components/bootstrap-tour/build/js/bootstrap-tour.min.js"></script>
+<!-- star rating plugin -->
+<script src="js/jquery.raty.min.js"></script>
+<!-- for iOS style toggle switch -->
+<script src="js/jquery.iphone.toggle.js"></script>
+<!-- autogrowing textarea plugin -->
+<script src="js/jquery.autogrow-textarea.js"></script>
+<!-- multiple file upload plugin -->
+<script src="js/jquery.uploadify-3.1.min.js"></script>
+<!-- history.js for cross-browser state change on ajax -->
+<script src="js/jquery.history.js"></script>
+<!-- application script for Charisma demo -->
+<!--<script src="js/charisma.js"></script>-->
+
+<script>
+    const { createApp, reactive, onMounted } = Vue;
+
+    const app = createApp({
+        methods: {
+            refreshPage() {
+                location.reload();
+            },
+            async restart() {
+                axios.post(window.AppConfig.apiUrl+'/restart', {timeout: 500});
+            }
+        },
+        setup() {
+            const info = reactive({});
+
+            // 暴露以便外部访问
+            //app.config.globalProperties.$info = info;
+
+            const fetchUserInfo = async () => {
+                try {
+                    const inputNames = Array.from(document.querySelectorAll('#content input')).map(input => input.id);
+
+                    console.log(inputNames);
+                    const response = await axios.post(window.AppConfig.apiUrl+'/oper/read_yml', inputNames);
+                    console.log(response.data);
+
+                    // 更新 Vue 的响应式数据
+                    //info.value = response.data;
+                    Object.assign(info, {
+                        intent_switch: response.data["intent.switch"],
+                        intent_model: response.data["intent.model"],
+                        memory_switch: response.data["memory.switch"],
+                    });
+                } catch (error) {
+                    console.error('Failed to fetch user info:', error);
+                }
+            };
+
+            onMounted(() => {
+                fetchUserInfo();
+            });
+
+            const handleSubmit = async () => {
+                try {
+                    info.intent_switch = $("#intent\\.switch").is(':checked');
+                    info.memory_switch = $("#memory\\.switch").is(':checked');
+
+                    let postData = {
+                        "intent.switch": info.intent_switch,
+                        "intent.model": info.intent_model,
+                        "memory.switch": info.memory_switch,
+                    };
+                    console.log(postData);
+                    // 发送 POST 请求到后端 API
+                    const response = await axios.post(window.AppConfig.apiUrl+'/oper/write_yml', postData, headers={'Content-Type': 'application/json'});
+                    console.log('更新成功', response.data);
+                    if(response.data["status"]=="成功") {
+                        $.jBox.tip('更新成功', 'success');
+                    }
+                } catch (error) {
+                    console.error('更新失败', error);
+                }
+            };
+
+            return {
+                info,
+                handleSubmit
+            };
+        }
+    }).mount('#content');
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+    <meta charset="utf-8">
+    <title>首页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Ai吟美管理后台">
+    <meta name="author" content="程序猿的退休生活">
+
+    <!-- The styles -->
+    <link id="bs-css" href="css/bootstrap-cerulean.min.css" rel="stylesheet">
+
+    <link href="css/charisma-app.css" rel="stylesheet">
+    <link href='bower_components/fullcalendar/dist/fullcalendar.css' rel='stylesheet'>
+    <link href='bower_components/fullcalendar/dist/fullcalendar.print.css' rel='stylesheet' media='print'>
+    <link href='bower_components/chosen/chosen.min.css' rel='stylesheet'>
+    <link href='bower_components/colorbox/example3/colorbox.css' rel='stylesheet'>
+    <link href='bower_components/responsive-tables/responsive-tables.css' rel='stylesheet'>
+    <link href='bower_components/bootstrap-tour/build/css/bootstrap-tour.min.css' rel='stylesheet'>
+    <link href='css/jquery.noty.css' rel='stylesheet'>
+    <link href='css/noty_theme_default.css' rel='stylesheet'>
+    <link href='css/elfinder.min.css' rel='stylesheet'>
+    <link href='css/elfinder.theme.css' rel='stylesheet'>
+    <link href='css/jquery.iphone.toggle.css' rel='stylesheet'>
+    <link href='css/uploadify.css' rel='stylesheet'>
+    <link href='css/animate.min.css' rel='stylesheet'>
+    <link href='css/extend.css' rel='stylesheet'>
+    <!-- jQuery -->
+    <script src="bower_components/jquery/jquery.min.js"></script>
+    <!--jbox-->
+    <link id="skin" rel="stylesheet" href="bower_components/jBox/Skins/Red/jbox.css" />
+    <script type="text/javascript" src="bower_components/jBox/jquery.jBox-2.3.min.js"></script>
+    <script type="text/javascript" src="bower_components/jBox/i18n/jquery.jBox-zh-CN.js"></script>
+    <!--vue-->
+    <script src="js/vue.3.5.13.js"></script>
+    <script src="js/axios.min.js"></script>
+    <script src="config.js"></script>
+    <!-- The fav icon -->
+    <link rel="shortcut icon" href="img/favicon.ico">
+
+    <script type="text/javascript">
+        async function loadMenu() {
+            const response = await fetch('menu.html', {cache: 'force-cache'});
+            const menuHtml = await response.text();
+            document.getElementById('menu').innerHTML = menuHtml;
+        }
+
+        async function loadFooter() {
+            const response = await fetch('footer.html', {cache: 'force-cache'});
+            const footerHtml = await response.text();
+            document.getElementById('footer').innerHTML = footerHtml;
+        }
+
+        async function loadTopbar() {
+            const response = await fetch('topbar.html', {cache: 'force-cache'});
+            const topbarHtml = await response.text();
+            document.getElementById('topbar').innerHTML = topbarHtml;
+
+            // 菜单加载完成后，加载其他JavaScript文件
+            const script = document.createElement('script');
+            script.src = 'js/charisma.js';
+            document.head.appendChild(script);
+        }
+
+        // DOMContentLoaded 事件确保 DOM 已经加载完成
+        document.addEventListener('DOMContentLoaded', () => {
+            loadMenu();
+            loadTopbar();
+            loadFooter();
+        });
+    </script>
+</head>
+
+<body>
+<!-- topbar starts -->
+<div id="topbar"></div>
+<!-- topbar ends -->
+<div class="ch-container">
+    <div class="row">
+
+        <!-- left menu starts -->
+        <div id="menu"></div>
+        <!-- left menu ends -->
+
+
+        <div id="content" class="col-lg-10 col-sm-10">
+            <!-- content starts -->
+            <div>
+                <ul class="breadcrumb">
+                    <li>
+                        <a href="index.html">Home</a>
+                    </li>
+                    <li>
+                        <a href="web_server.html">基础配置</a>
+                    </li>
+                </ul>
+            </div>
+
+                <div class="row">
+                    <div class="box col-md-12">
+                        <div class="box-inner">
+                            <div class="box-header well" data-original-title="">
+                                <h2><i class="glyphicon glyphicon-edit"></i> 基础配置</h2>
+
+                                <div class="box-icon">
+                                    <a href="#" class="btn btn-setting btn-round btn-default"><i
+                                            class="glyphicon glyphicon-cog"></i></a>
+                                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                                            class="glyphicon glyphicon-chevron-up"></i></a>
+                                    <a href="#" class="btn btn-close btn-round btn-default"><i
+                                            class="glyphicon glyphicon-remove"></i></a>
+                                </div>
+                            </div>
+
+                            <div class="box-content" style="line-height: 25px;">
+                                <div class="line">
+                                    <iframe src="//player.bilibili.com/player.html?bvid=BV1W4mUYiEE2&page=1"
+                                            width="45%" height="500"
+                                            scrolling="no" border="0" frameborder="no" framespacing="0"
+                                            allowfullscreen="true">
+
+                                    </iframe>
+
+                                    <span style="font-size: 25px; font-weight: bold">吟美智能分析</span>
+                                    <b>AI名称</b>：吟美
+                                    <b>开发者</b>：Winlone
+                                    <b>B站频道</b>：<a href="https://space.bilibili.com/46130941" target="_blank">程序猿的退休生活</a>
+                                    <b>直播间</b>：<a href="http://live.bilibili.com/31814714"
+                                                     target="_blank">Ai吟美直播间</a>
+                                    <b>Ai吟美教程汇集</b>：<a href="https://www.bilibili.com/opus/917633416510308400"
+                                                             target="_blank">https://www.bilibili.com/opus/917633416510308400</a>
+                                    <b>Q群</b>：27831318
+                                    <b>版本</b>：2.0.0
+                                    <b>吟美整合包下载地址</b>：
+                                    <b>百度网盘群</b>：请在“百度网盘->消息” 添加群号
+                                    百度网盘群号1：930109408（满）
+                                    百度网盘群号2：939447713
+                                    百度网盘群号3：945900295
+                                    提示：因为百度网盘分享总是屏蔽，现在切换到百度网盘的群分享，请在“百度网盘->消息”
+                                    添加群号，加入群后可以在文件列表进行下载
+                                    <b>夸克</b>：<a href="https://pan.quark.cn/s/ade5c2d30ae7" target="_blank">https://pan.quark.cn/s/ade5c2d30ae7</a>
+                                    提取码：ci9B
+                                    <b>功能整合包下载(5个)</b>：人工智能 -> yinmei-all
+                                    GPT-SoVITS语音1.0版本和2.0版本、鉴黄public-NSFW-y-distinguish、绘画stable-diffusion-webui、Live2D皮肤
+                                    <b>吟美核心【版本迭代】</b>：人工智能 -> 吟美核心
+                                    <b>吟美开发文档</b>：人工智能 -> 吟美开发文档
+                                    <b>旧版吟美项目【因集成过多内置第三方项目，已废弃】</b>：
+                                    <a href="https://github.com/worm128/AI-YinMei-backup" target="_blank">https://github.com/worm128/AI-YinMei-backup</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/span-->
+
+                </div><!--/row-->
+            <!-- content ends -->
+        </div><!--/#content.col-md-0-->
+    </div><!--/fluid-row-->
+
+    <hr>
+    <!-- 底部 -->
+    <div id="footer"></div>
+    <!-- end -->
+
+</div><!--/.fluid-container-->
+
+<!-- external javascript -->
+
+<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+<!-- library for cookie management -->
+<script src="js/jquery.cookie.js"></script>
+<!-- calender plugin -->
+<script src='bower_components/moment/min/moment.min.js'></script>
+<script src='bower_components/fullcalendar/dist/fullcalendar.min.js'></script>
+<!-- data table plugin -->
+<script src='js/jquery.dataTables.min.js'></script>
+
+<!-- select or dropdown enhancer -->
+<script src="bower_components/chosen/chosen.jquery.min.js"></script>
+<!-- plugin for gallery image view -->
+<script src="bower_components/colorbox/jquery.colorbox-min.js"></script>
+<!-- notification plugin -->
+<script src="js/jquery.noty.js"></script>
+<!-- library for making tables responsive -->
+<script src="bower_components/responsive-tables/responsive-tables.js"></script>
+<!-- tour plugin -->
+<script src="bower_components/bootstrap-tour/build/js/bootstrap-tour.min.js"></script>
+<!-- star rating plugin -->
+<script src="js/jquery.raty.min.js"></script>
+<!-- for iOS style toggle switch -->
+<script src="js/jquery.iphone.toggle.js"></script>
+<!-- autogrowing textarea plugin -->
+<script src="js/jquery.autogrow-textarea.js"></script>
+<!-- multiple file upload plugin -->
+<script src="js/jquery.uploadify-3.1.min.js"></script>
+<!-- history.js for cross-browser state change on ajax -->
+<script src="js/jquery.history.js"></script>
+<!-- application script for Charisma demo -->
+<!--<script src="js/charisma.js"></script>-->
+
+</body>
+</html>

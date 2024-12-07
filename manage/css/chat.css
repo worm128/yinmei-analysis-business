@@ -1,0 +1,53 @@
+#outer{
+    width: 95%; height:600px; overflow-y: auto; margin: 0 auto; box-shadow: inset -1px -1px 2px #888; /* 内阴影 */
+    background-color: #f8f8f8; padding: 10px 0 10px 0;
+}
+#move-area{
+    width: auto; height: auto;
+}
+#chatArea{
+    width: 100%; font-size: 16px;
+    word-wrap: break-word; overflow-y: auto;
+    font-family: Arial, sans-serif;
+}
+
+.message {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 10px;
+}
+
+.message.left {
+    justify-content: flex-start; margin-right: 10px;
+}
+
+.message.right {
+    justify-content: flex-end; margin-left: 10px;
+}
+
+.avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin: 0 10px;
+}
+
+.content p {
+    max-width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    word-wrap: break-word;
+    line-height: 1.4;
+}
+
+.message.left .content p {
+    background-color: #f0f0f0;
+    color: #000;
+    border-radius: 20px 20px 20px 0;
+}
+
+.message.right .content p {
+    background-color: #dcf8c6;
+    color: #000;
+    border-radius: 20px 20px 0 20px;
+}
