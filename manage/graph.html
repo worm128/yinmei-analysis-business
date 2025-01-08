@@ -179,6 +179,17 @@
                             </div>
 
                             <div class="line">
+                                <div class="form-group position" style="width: 400px">
+                                    <label for="graph.json_replace">第一次json特殊字符替换</label><span class="tip" data-toggle="tooltip" title="key为正则匹配的字符，value为替换的字符。这是第一次正常字符的替换"><i class="glyphicon glyphicon-question-sign"></i></span>
+                                    <input type="text" class="form-control" id="graph.json_replace" placeholder='{"(```|json)":"", "\"{":"{","}\"":"}"}' v-model="info.json_replace">
+                                </div>
+                                <div class="form-group position" style="width: 400px">
+                                    <label for="graph.json_replace2">错误后二次执行json特殊字符替换</label><span class="tip" data-toggle="tooltip" title="这是出现异常解析json串后做二次字符串特殊替换"><i class="glyphicon glyphicon-question-sign"></i></span>
+                                    <input type="text" class="form-control" id="graph.json_replace2" placeholder='{"(```|json)":"", "\"{":"{","}\"":"}"}' v-model="info.json_replace2">
+                                </div>
+                            </div>
+
+                            <div class="line">
                                 <button id="save" type="submit" class="btn btn-default" title="保存配置后不会立马生效，需要点击重启应用按钮才会生效" data-toggle="tooltip">保存配置</button>
                                 &nbsp;
                                 <button id="cancel" type="button" class="btn btn-default" @click="refreshPage">取消</button>
@@ -258,7 +269,10 @@
                 axios.get(window.AppConfig.apiUrl+'/graph_data_import', {timeout: 5000});
             },
             async import_data_stop() {
-                axios.get(window.AppConfig.apiUrl+'/graph_data_import_stop', {timeout: 5000});
+                const response = await axios.get(window.AppConfig.apiUrl+'/graph_data_import_stop', {timeout: 5000});
+                if(response.data["status"]=="成功") {
+                    $.jBox.tip('中断成功', 'success');
+                }
             }
         },
         setup() {
@@ -288,6 +302,9 @@
                         graph_file_path: response.data["graph.file_path"],
                         graph_line: response.data["graph.line"],
 
+                        json_replace: JSON.stringify(response.data["graph.json_replace"]),
+                        json_replace2: JSON.stringify(response.data["graph.json_replace2"]),
+
                         llm_apikey: response.data["llm.apikey"],
                         llm_url: response.data["llm.url"],
                         llm_modelname: response.data["llm.modelname"],
@@ -314,6 +331,9 @@
                         "graph.switch": info.graph_switch,
                         "graph.file_path": info.graph_file_path,
                         "graph.line": Number(info.graph_line),
+
+                        "graph.json_replace": JSON.parse(info.json_replace),
+                        "graph.json_replace2": JSON.parse(info.json_replace2),
 
                         "llm.apikey": info.llm_apikey,
                         "llm.url": info.llm_url,
